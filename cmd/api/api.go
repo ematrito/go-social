@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github/ematrito/go-social/internal/store"
 	"log"
 	"net/http"
 	"time"
@@ -11,6 +12,7 @@ import (
 
 type application struct {
 	config config
+	store  store.Storage
 }
 
 type config struct {
