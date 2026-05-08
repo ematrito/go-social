@@ -20,7 +20,7 @@ type UserStore struct {
 func (s *UserStore) Create(ctx context.Context, user *User) error {
 
 	query := `
-	  	INSERT INTO posts (content, title, user_id, tags) 
+	  	INSERT INTO users (username, email, password) 
 	   	VALUES ($1, $2, $3, $4) RETURNING id, created_at, updated_at
 	`
 	err := s.db.QueryRowContext(
