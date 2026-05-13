@@ -1,1 +1,1 @@
-ALTER TABLE posts DROP COLUMN versions;
+ALTER TABLE posts DROP COLUMN version;
