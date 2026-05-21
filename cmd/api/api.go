@@ -66,7 +66,7 @@ func (app *application) mount() http.Handler {
 				r.Get("/", app.getUserHandler)
 
 				r.Put("/follow", app.followUserHandler)
-				r.Put("/follow", app.unfollowUserHandler)
+				r.Put("/unfollow", app.unfollowUserHandler)
 			})
 		})
 
