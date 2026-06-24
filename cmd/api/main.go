@@ -4,6 +4,7 @@ import (
 	"github/ematrito/go-social/internal/db"
 	"github/ematrito/go-social/internal/env"
 	"github/ematrito/go-social/internal/store"
+	"time"
 
 	_ "github/ematrito/go-social/cmd/api/docs"
 
@@ -42,6 +43,9 @@ func main() {
 			maxIdleTime:  env.GetString("DB_MAX_IDLE_TIME", "15m"),
 		},
 		env: env.GetString("ENV", "development"),
+		mail: mailConfig{
+			exp: time.Hour * 24 * 3,
+		},
 	}
 
 	// Logger
