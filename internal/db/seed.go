@@ -2,18 +2,22 @@ package db
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"github/ematrito/go-social/internal/store"
 	"log"
 	"math/rand"
 )
 
-func Seed(store store.Storage) {
+func Seed(store store.Storage, db *sql.DB) {
 	ctx := context.Background()
 
 	users := generateUsers(100)
+	tx, _ := db.BeginTx(ctx, nil)
+
 	for _, user := range users {
-		if err := store.Users.Create(ctx, user); err != nil {
+		if err := store.Users.Create(ctx, tx, user); err != nil {
+			_ = tx.Rollback()
 			log.Println("error during users creation:", err)
 			return
 		}
@@ -47,7 +51,11 @@ func generateUsers(num int) []*store.User {
 		users[i] = &store.User{
 			Username: username,
 			Email:    email,
-			Password: "asdasdasd",
+		}
+
+		if err := users[i].Password.Set("asdasdasd"); err != nil {
+			log.Println("error during user password creation:", err)
+			return nil
 		}
 	}
 	return users
