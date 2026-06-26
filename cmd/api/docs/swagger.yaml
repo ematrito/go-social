@@ -38,6 +38,21 @@ definitions:
       user_id:
         type: integer
     type: object
+  main.UserWithToken:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      isActive:
+        type: boolean
+      token:
+        type: string
+      username:
+        type: string
+    type: object
   store.Comment:
     properties:
       content:
@@ -117,6 +132,8 @@ definitions:
         type: string
       id:
         type: integer
+      isActive:
+        type: boolean
       username:
         type: string
     type: object
@@ -133,6 +150,27 @@ info:
   title: Go-social API
   version: "1.0"
 paths:
+  /authentication/user:
+    post:
+      consumes:
+      - application/json
+      description: Registers a user
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User registered
+          schema:
+            $ref: '#/definitions/main.UserWithToken'
+        "400":
+          description: Bad Request
+          schema: {}
+        "500":
+          description: Internal Server Error
+          schema: {}
+      summary: Registers a user
+      tags:
+      - authentication
   /v1/health:
     get:
       description: Returns server health status
@@ -415,6 +453,37 @@ paths:
           schema:
             type: object
       summary: Unfollow a user
+      tags:
+      - users
+  /v1/users/activate/{token}:
+    put:
+      consumes:
+      - application/json
+      description: Activates a user account via invitation token
+      parameters:
+      - description: Activation token
+        in: path
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: User activated
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Activate a user
       tags:
       - users
   /v1/users/feed:

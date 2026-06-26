@@ -24,6 +24,37 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/authentication/user": {
+            "post": {
+                "description": "Registers a user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "authentication"
+                ],
+                "summary": "Registers a user",
+                "responses": {
+                    "201": {
+                        "description": "User registered",
+                        "schema": {
+                            "$ref": "#/definitions/main.UserWithToken"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {}
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {}
+                    }
+                }
+            }
+        },
         "/v1/health": {
             "get": {
                 "description": "Returns server health status",
@@ -279,6 +310,55 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object"
+                        }
+                    }
+                }
+            }
+        },
+        "/v1/users/activate/{token}": {
+            "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Activates a user account via invitation token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Activate a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Activation token",
+                        "name": "token",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "User activated",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "type": "object"
                         }
@@ -594,6 +674,29 @@ const docTemplate = `{
                 }
             }
         },
+        "main.UserWithToken": {
+            "type": "object",
+            "properties": {
+                "created_at": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
+                },
+                "token": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "store.Comment": {
             "type": "object",
             "properties": {
@@ -713,6 +816,9 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
+                },
+                "isActive": {
+                    "type": "boolean"
                 },
                 "username": {
                     "type": "string"

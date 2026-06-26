@@ -124,11 +124,11 @@ func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Reque
 //	@Accept			json
 //	@Produce		json
 //	@Param			token	path		string	true	"Activation token"
-//	@Success		204		{string} "User activated"
+//	@Success		204		{string}	string	"User activated"
 //	@Failure		400		{object}	object
 //	@Failure		500		{object}	object
 //
-// @Security		ApiKeyAuth
+//	@Security		ApiKeyAuth
 //
 //	@Router			/v1/users/activate/{token} [put]
 func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Request) {
