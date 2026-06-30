@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github/ematrito/go-social/internal/mailer"
 	"github/ematrito/go-social/internal/store"
 	"net/http"
 	"time"
@@ -18,6 +19,7 @@ type application struct {
 	config config
 	store  store.Storage
 	logger *zap.SugaredLogger
+	mailer mailer.Client
 }
 
 type config struct {
