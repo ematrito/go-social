@@ -3,6 +3,8 @@ package main
 import (
 	"crypto/sha256"
 	"encoding/hex"
+	"fmt"
+	"github/ematrito/go-social/internal/mailer"
 	"github/ematrito/go-social/internal/store"
 	"net/http"
 
@@ -27,10 +29,10 @@ type UserWithToken struct {
 //	@Tags			authentication
 //	@Accept			json
 //	@Produce		json
-//	@Params			payload body RegisterUserPayload true "User credentials"
-//	@Success		201	{object}	UserWithToken	"User registered"
-//	@Failure		400	{object}	error
-//	@Failure		500	{object}	error
+//	@Param			payload	body		RegisterUserPayload	true	"User credentials"
+//	@Success		201		{object}	UserWithToken		"User registered"
+//	@Failure		400		{object}	error
+//	@Failure		500		{object}	error
 //	@Router			/authentication/user [post]
 func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Request) {
 	var payload RegisterUserPayload
@@ -80,6 +82,31 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		User:  user,
 		Token: plainToken,
 	}
+
+	activationURL := fmt.Sprintf("%s/confirm/%s", app.config.frontendURL, plainToken)
+
+	isProdEnv := app.config.env == "production"
+	vars := struct {
+		Username      string
+		ActivationURL string
+	}{
+		Username:      user.Username,
+		ActivationURL: activationURL,
+	}
+	// send email
+	err = app.mailer.Send(mailer.UserWelcomeTemplate, user.Username, user.Email, vars, !isProdEnv)
+	if err != nil {
+		app.logger.Errorw("error sending welcome email", "error", err)
+
+		// rolls back user creation (SAGA)
+		if err := app.store.Users.Delete(ctx, user.ID); err != nil {
+			app.logger.Errorw("error deleting user", "error", err)
+		}
+
+		app.internalServerError(w, r, err)
+		return
+	}
+
 	if err := app.jsonResponse(w, http.StatusCreated, userWithToken); err != nil {
 		app.internalServerError(w, r, err)
 	}

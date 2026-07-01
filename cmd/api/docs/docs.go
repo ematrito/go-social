@@ -37,6 +37,17 @@ const docTemplate = `{
                     "authentication"
                 ],
                 "summary": "Registers a user",
+                "parameters": [
+                    {
+                        "description": "User credentials",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.RegisterUserPayload"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "User registered",
@@ -671,6 +682,29 @@ const docTemplate = `{
             "properties": {
                 "user_id": {
                     "type": "integer"
+                }
+            }
+        },
+        "main.RegisterUserPayload": {
+            "type": "object",
+            "required": [
+                "email",
+                "password",
+                "username"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "maxLength": 255
+                },
+                "password": {
+                    "type": "string",
+                    "maxLength": 72,
+                    "minLength": 3
+                },
+                "username": {
+                    "type": "string",
+                    "maxLength": 100
                 }
             }
         },

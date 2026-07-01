@@ -2,6 +2,8 @@ package mailer
 
 import (
 	"bytes"
+	"fmt"
+	"html/template"
 	"log"
 	"time"
 
@@ -31,9 +33,21 @@ func (m *SendGridMailer) Send(templateFile, username, email string, data any, is
 
 	to := mail.NewEmail(username, email)
 
+	tmpl, err := template.ParseFS(FS, "templates/"+templateFile)
+	if err != nil {
+		return err
+	}
 	subject := new(bytes.Buffer)
-	body := new(bytes.Buffer)
+	err = tmpl.ExecuteTemplate(subject, "subject", data)
+	if err != nil {
+		return err
+	}
 
+	body := new(bytes.Buffer)
+	err = tmpl.ExecuteTemplate(body, "body", data)
+	if err != nil {
+		return err
+	}
 	message := mail.NewSingleEmail(from, subject.String(), to, "", body.String())
 
 	message.SetMailSettings(&mail.MailSettings{
@@ -52,8 +66,9 @@ func (m *SendGridMailer) Send(templateFile, username, email string, data any, is
 			time.Sleep(time.Second * time.Duration(i+1))
 			continue
 		}
-		log.Printf("Email sent with status code %v", email, response.StatusCode)
+		log.Printf("Email sent with status code %v", response.StatusCode)
 		return nil
 	}
-	// CONTINUE
+
+	return fmt.Errorf("failed to send email after %d attempts", maxRetries)
 }

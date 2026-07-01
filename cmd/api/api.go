@@ -23,15 +23,22 @@ type application struct {
 }
 
 type config struct {
-	addr   string
-	db     dbConfig
-	env    string
-	apiURL string
-	mail   mailConfig
+	addr        string
+	db          dbConfig
+	env         string
+	apiURL      string
+	mail        mailConfig
+	frontendURL string
 }
 
 type mailConfig struct {
-	exp time.Duration
+	sendGrid  sendGridConfig
+	exp       time.Duration
+	fromEmail string
+}
+
+type sendGridConfig struct {
+	apiKey string
 }
 
 type dbConfig struct {
@@ -88,10 +95,11 @@ func (app *application) mount() http.Handler {
 				r.Get("/feed", app.getUserFeedHandler)
 			})
 
-			// public routes
-			r.Route("/authentication", func(r chi.Router) {
-				r.Post("/user", app.registerUserHandler)
-			})
+		})
+
+		// public routes
+		r.Route("/authentication", func(r chi.Router) {
+			r.Post("/user", app.registerUserHandler)
 		})
 
 	})

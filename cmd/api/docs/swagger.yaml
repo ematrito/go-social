@@ -38,6 +38,23 @@ definitions:
       user_id:
         type: integer
     type: object
+  main.RegisterUserPayload:
+    properties:
+      email:
+        maxLength: 255
+        type: string
+      password:
+        maxLength: 72
+        minLength: 3
+        type: string
+      username:
+        maxLength: 100
+        type: string
+    required:
+    - email
+    - password
+    - username
+    type: object
   main.UserWithToken:
     properties:
       created_at:
@@ -155,6 +172,13 @@ paths:
       consumes:
       - application/json
       description: Registers a user
+      parameters:
+      - description: User credentials
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/main.RegisterUserPayload'
       produces:
       - application/json
       responses:

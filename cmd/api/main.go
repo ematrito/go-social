@@ -3,6 +3,7 @@ package main
 import (
 	"github/ematrito/go-social/internal/db"
 	"github/ematrito/go-social/internal/env"
+	"github/ematrito/go-social/internal/mailer"
 	"github/ematrito/go-social/internal/store"
 	"time"
 
@@ -44,8 +45,13 @@ func main() {
 		},
 		env: env.GetString("ENV", "development"),
 		mail: mailConfig{
-			exp: time.Hour * 24 * 3,
+			exp:       time.Hour * 24 * 3,
+			fromEmail: env.GetString("FROM_EMAIL", ""),
+			sendGrid: sendGridConfig{
+				apiKey: env.GetString("SENDGRID_API_KEY", ""),
+			},
 		},
+		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:4000"),
 	}
 
 	// Logger
@@ -63,10 +69,13 @@ func main() {
 
 	store := store.NewStorage(db)
 
+	mailer := mailer.NewSendGrid(cfg.mail.sendGrid.apiKey, cfg.mail.fromEmail)
+
 	app := &application{
 		config: cfg,
 		store:  store,
 		logger: logger,
+		mailer: mailer,
 	}
 
 	mux := app.mount()
