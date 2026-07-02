@@ -69,13 +69,24 @@ func main() {
 
 	store := store.NewStorage(db)
 
-	mailer := mailer.NewSendGrid(cfg.mail.sendGrid.apiKey, cfg.mail.fromEmail)
+	var emailClient mailer.Client
+
+	if cfg.env == "development" {
+		smtpAddr := env.GetString("MAILPIT_SMTP_ADDR", "localhost:1025")
+
+		emailClient = mailer.NewSMTPMailer(cfg.mail.fromEmail, smtpAddr)
+		logger.Infow("mailer configured", "provider", "mailpit", "addr", smtpAddr)
+
+	} else {
+		emailClient = mailer.NewSendGrid(cfg.mail.sendGrid.apiKey, cfg.mail.fromEmail)
+		logger.Infow("mailer configured", "provider", "sendgrid")
+	}
 
 	app := &application{
 		config: cfg,
 		store:  store,
 		logger: logger,
-		mailer: mailer,
+		mailer: emailClient,
 	}
 
 	mux := app.mount()

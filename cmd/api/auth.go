@@ -85,7 +85,6 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 
 	activationURL := fmt.Sprintf("%s/confirm/%s", app.config.frontendURL, plainToken)
 
-	isProdEnv := app.config.env == "production"
 	vars := struct {
 		Username      string
 		ActivationURL string
@@ -94,9 +93,9 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		ActivationURL: activationURL,
 	}
 	// send email
-	err = app.mailer.Send(mailer.UserWelcomeTemplate, user.Username, user.Email, vars, !isProdEnv)
+	status, err := app.mailer.Send(mailer.UserWelcomeTemplate, user.Username, user.Email, vars)
 	if err != nil {
-		app.logger.Errorw("error sending welcome email", "error", err)
+		app.logger.Errorw("error sending welcome email", "error", err, "status", status)
 
 		// rolls back user creation (SAGA)
 		if err := app.store.Users.Delete(ctx, user.ID); err != nil {
@@ -106,6 +105,8 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		app.internalServerError(w, r, err)
 		return
 	}
+
+	app.logger.Infow("Email sent", "status code", status)
 
 	if err := app.jsonResponse(w, http.StatusCreated, userWithToken); err != nil {
 		app.internalServerError(w, r, err)
