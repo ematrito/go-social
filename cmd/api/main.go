@@ -55,7 +55,7 @@ func main() {
 	}
 
 	// Logger
-	logger := zap.Must(zap.NewProduction()).Sugar()
+	logger := zap.Must(zap.NewProduction()).With(zap.String("env", env.GetString("ENV", ""))).Sugar()
 	defer logger.Sync()
 
 	db, err := db.New(cfg.db.addr, cfg.db.maxOpenConns, cfg.db.maxIdleConns, cfg.db.maxIdleTime)

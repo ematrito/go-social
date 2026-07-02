@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"html/template"
 	"log"
+	"net/smtp"
+	"os"
 	"time"
 
 	"github.com/sendgrid/sendgrid-go"
@@ -48,7 +50,16 @@ func (m *SendGridMailer) Send(templateFile, username, email string, data any, is
 	if err != nil {
 		return err
 	}
-	message := mail.NewSingleEmail(from, subject.String(), to, "", body.String())
+
+	subjectStr := subject.String()
+	bodyStr := body.String()
+
+	if isSandbox {
+		log.Printf("Routing email to Mailpit (development mode)")
+		return m.sendViaSMTP(m.fromEmail, email, subjectStr, bodyStr)
+	}
+
+	message := mail.NewSingleEmail(from, subjectStr, to, "", bodyStr)
 
 	message.SetMailSettings(&mail.MailSettings{
 		SandboxMode: &mail.Setting{
@@ -71,4 +82,23 @@ func (m *SendGridMailer) Send(templateFile, username, email string, data any, is
 	}
 
 	return fmt.Errorf("failed to send email after %d attempts", maxRetries)
+}
+
+func (m *SendGridMailer) sendViaSMTP(from, to, subject, body string) error {
+	smtpAddr := os.Getenv("MAILPIT_SMTP_ADDR")
+	if smtpAddr == "" {
+		smtpAddr = "localhost:1025" // Fallback
+	}
+
+	emailContent := fmt.Sprintf("From: %s\r\nTo: %s\r\nSubject: %s\r\nContent-Type: text/html; charset=UTF-8\r\n\r\n%s", from, to, subject, body)
+
+	msgBytes := []byte(emailContent)
+
+	err := smtp.SendMail(smtpAddr, nil, from, []string{to}, msgBytes)
+	if err != nil {
+		return fmt.Errorf("failed to send via Mailpit: %w", err)
+	}
+
+	log.Printf("Email successfully caught by Mailpit")
+	return nil
 }
