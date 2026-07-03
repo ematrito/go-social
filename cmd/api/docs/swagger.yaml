@@ -195,7 +195,7 @@ paths:
       summary: Registers a user
       tags:
       - authentication
-  /v1/health:
+  /health:
     get:
       description: Returns server health status
       produces:
@@ -210,7 +210,7 @@ paths:
       summary: Health check
       tags:
       - health
-  /v1/posts:
+  /posts:
     post:
       consumes:
       - application/json
@@ -240,7 +240,7 @@ paths:
       summary: Create a post
       tags:
       - posts
-  /v1/posts/{postID}:
+  /posts/{postID}:
     delete:
       consumes:
       - application/json
@@ -333,7 +333,7 @@ paths:
       summary: Update a post
       tags:
       - posts
-  /v1/posts/{postID}/comments:
+  /posts/{postID}/comments:
     post:
       consumes:
       - application/json
@@ -372,7 +372,7 @@ paths:
       summary: Add a comment
       tags:
       - comments
-  /v1/users/{userID}:
+  /users/{userID}:
     get:
       consumes:
       - application/json
@@ -401,7 +401,7 @@ paths:
       summary: Get a user
       tags:
       - users
-  /v1/users/{userID}/follow:
+  /users/{userID}/follow:
     put:
       consumes:
       - application/json
@@ -442,7 +442,7 @@ paths:
       summary: Follow a user
       tags:
       - users
-  /v1/users/{userID}/unfollow:
+  /users/{userID}/unfollow:
     put:
       consumes:
       - application/json
@@ -479,7 +479,7 @@ paths:
       summary: Unfollow a user
       tags:
       - users
-  /v1/users/activate/{token}:
+  /users/activate/{token}:
     put:
       consumes:
       - application/json
@@ -510,7 +510,7 @@ paths:
       summary: Activate a user
       tags:
       - users
-  /v1/users/feed:
+  /users/feed:
     get:
       consumes:
       - application/json

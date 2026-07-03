@@ -22,7 +22,7 @@ type CreateCommentPayload struct {
 //	@Failure		400		{object}	object
 //	@Failure		404		{object}	object
 //	@Failure		500		{object}	object
-//	@Router			/v1/posts/{postID}/comments [post]
+//	@Router			/posts/{postID}/comments [post]
 func (app *application) createCommentHandler(w http.ResponseWriter, r *http.Request) {
 	post := getPostFromCtx(r)
 

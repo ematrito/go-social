@@ -22,7 +22,7 @@ import (
 //	@Success		200		{array}		store.PostWithMetadata
 //	@Failure		400		{object}	object
 //	@Failure		500		{object}	object
-//	@Router			/v1/users/feed [get]
+//	@Router			/users/feed [get]
 func (app *application) getUserFeedHandler(w http.ResponseWriter, r *http.Request) {
 
 	fq := store.PaginatedFeedQuery{

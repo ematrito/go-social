@@ -58,5 +58,5 @@ func (m *SMTPMailer) Send(templateFile, username, email string, data any) (int, 
 		return -1, fmt.Errorf("failed to send via SMTP: %w", err)
 	}
 
-	return 200, nil
+	return 201, nil
 }

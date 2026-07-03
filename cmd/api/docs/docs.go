@@ -66,7 +66,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/health": {
+        "/health": {
             "get": {
                 "description": "Returns server health status",
                 "produces": [
@@ -89,7 +89,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/posts": {
+        "/posts": {
             "post": {
                 "description": "Creates a new post",
                 "consumes": [
@@ -135,7 +135,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/posts/{postID}": {
+        "/posts/{postID}": {
             "get": {
                 "description": "Retrieves a post by ID with its comments",
                 "consumes": [
@@ -275,7 +275,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/posts/{postID}/comments": {
+        "/posts/{postID}/comments": {
             "post": {
                 "description": "Adds a comment to a post",
                 "consumes": [
@@ -334,7 +334,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/activate/{token}": {
+        "/users/activate/{token}": {
             "put": {
                 "security": [
                     {
@@ -383,7 +383,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/feed": {
+        "/users/feed": {
             "get": {
                 "description": "Retrieves paginated feed for the authenticated user",
                 "consumes": [
@@ -465,7 +465,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/{userID}": {
+        "/users/{userID}": {
             "get": {
                 "description": "Retrieves a user by ID",
                 "consumes": [
@@ -509,7 +509,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/{userID}/follow": {
+        "/users/{userID}/follow": {
             "put": {
                 "description": "Follows a user",
                 "consumes": [
@@ -571,7 +571,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/v1/users/{userID}/unfollow": {
+        "/users/{userID}/unfollow": {
             "put": {
                 "description": "Unfollows a user",
                 "consumes": [

@@ -29,7 +29,7 @@ type FollowUser struct {
 //	@Success		200		{object}	store.User
 //	@Failure		404		{object}	object
 //	@Failure		500		{object}	object
-//	@Router			/v1/users/{userID} [get]
+//	@Router			/users/{userID} [get]
 func (app *application) getUserHandler(w http.ResponseWriter, r *http.Request) {
 
 	user := getUserFromCtx(r)
@@ -53,7 +53,7 @@ func (app *application) getUserHandler(w http.ResponseWriter, r *http.Request) {
 //	@Failure		404		{object}	object
 //	@Failure		409		{object}	object
 //	@Failure		500		{object}	object
-//	@Router			/v1/users/{userID}/follow [put]
+//	@Router			/users/{userID}/follow [put]
 func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request) {
 	followerUser := getUserFromCtx(r)
 
@@ -94,7 +94,7 @@ func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request
 //	@Failure		400		{object}	object
 //	@Failure		404		{object}	object
 //	@Failure		500		{object}	object
-//	@Router			/v1/users/{userID}/unfollow [put]
+//	@Router			/users/{userID}/unfollow [put]
 func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Request) {
 	unfollowedUser := getUserFromCtx(r)
 
@@ -130,7 +130,7 @@ func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Reque
 //
 //	@Security		ApiKeyAuth
 //
-//	@Router			/v1/users/activate/{token} [put]
+//	@Router			/users/activate/{token} [put]
 func (app *application) activateUserHandler(w http.ResponseWriter, r *http.Request) {
 	token := chi.URLParam(r, "token")
 
