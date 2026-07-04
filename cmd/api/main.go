@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github/ematrito/go-social/internal/auth"
 	"github/ematrito/go-social/internal/db"
 	"github/ematrito/go-social/internal/env"
 	"github/ematrito/go-social/internal/mailer"
@@ -54,8 +55,13 @@ func main() {
 		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:5174"),
 		auth: authConfig{
 			basic: basicConfig{
-				user: env.GetString("AUTH_BASIC_USER", "admin"),
-				pass: env.GetString("AUTH_BASIC_PASS", "admin"),
+				user: env.GetString("AUTH_BASIC_USER", "admin"), // REMEMBER TO SET IN ENV
+				pass: env.GetString("AUTH_BASIC_PASS", "admin"), // REMEMBER TO SET IN ENV
+			},
+			token: tokenConfig{
+				secret: env.GetString("AUTH_TOKEN_SECRET", "example"), // REMEMBER TO SET A SECRET IN ENV
+				exp:    time.Hour * 24 * 3,                            // 3 days
+				iss:    "gophersocial",
 			},
 		},
 	}
@@ -75,6 +81,8 @@ func main() {
 
 	store := store.NewStorage(db)
 
+	jwtAuthenticator := auth.NewJWTAuthenticator(cfg.auth.token.secret, cfg.auth.token.iss, cfg.auth.token.iss)
+
 	var emailClient mailer.Client
 
 	if cfg.env == "development" {
@@ -89,10 +97,11 @@ func main() {
 	}
 
 	app := &application{
-		config: cfg,
-		store:  store,
-		logger: logger,
-		mailer: emailClient,
+		config:        cfg,
+		store:         store,
+		logger:        logger,
+		mailer:        emailClient,
+		authenticator: jwtAuthenticator,
 	}
 
 	mux := app.mount()

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github/ematrito/go-social/internal/auth"
 	"github/ematrito/go-social/internal/mailer"
 	"github/ematrito/go-social/internal/store"
 	"net/http"
@@ -36,11 +37,18 @@ type config struct {
 
 type authConfig struct {
 	basic basicConfig
+	token tokenConfig
 }
 
 type basicConfig struct {
 	user string
 	pass string
+}
+
+type tokenConfig struct {
+	secret string
+	exp    time.Duration
+	iss    string
 }
 
 type mailConfig struct {

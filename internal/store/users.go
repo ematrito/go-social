@@ -190,7 +190,7 @@ func (s *UserStore) GetByEmail(ctx context.Context, userEmail string) (*User, er
 		&user.ID,
 		&user.Username,
 		&user.Email,
-		&user.Password,
+		&user.Password.hash,
 		&user.CreatedAt,
 	)
 
