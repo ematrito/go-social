@@ -57,15 +57,14 @@ func (app *application) getUserHandler(w http.ResponseWriter, r *http.Request) {
 func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request) {
 	followerUser := getUserFromCtx(r)
 
-	//TODO: revert back to auth userID from ctx
-	var payload FollowUser
-	if err := readJSON(w, r, &payload); err != nil {
+	followedID, err := strconv.ParseInt(chi.URLParam(r, "userID"), 10, 64)
+	if err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
 	ctx := r.Context()
 
-	if err := app.store.Followers.Follow(ctx, payload.UserID, followerUser.ID); err != nil {
+	if err := app.store.Followers.Follow(ctx, followedID, followerUser.ID); err != nil {
 		switch err {
 		case store.ErrConflict:
 			app.conflictResponse(w, r, err)
@@ -98,15 +97,14 @@ func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request
 func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Request) {
 	unfollowedUser := getUserFromCtx(r)
 
-	//TODO: revert back to auth userID from ctx
-	var payload FollowUser
-	if err := readJSON(w, r, &payload); err != nil {
+	followedID, err := strconv.ParseInt(chi.URLParam(r, "userID"), 10, 64)
+	if err != nil {
 		app.badRequestResponse(w, r, err)
 		return
 	}
 	ctx := r.Context()
 
-	if err := app.store.Followers.Unfollow(ctx, payload.UserID, unfollowedUser.ID); err != nil {
+	if err := app.store.Followers.Unfollow(ctx, followedID, unfollowedUser.ID); err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
