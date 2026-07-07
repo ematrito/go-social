@@ -53,6 +53,7 @@ func (app *application) getUserHandler(w http.ResponseWriter, r *http.Request) {
 //	@Failure		404		{object}	object
 //	@Failure		409		{object}	object
 //	@Failure		500		{object}	object
+//	@Security		ApiKeyAuth
 //	@Router			/users/{userID}/follow [put]
 func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request) {
 	followerUser := getUserFromCtx(r)
@@ -93,6 +94,7 @@ func (app *application) followUserHandler(w http.ResponseWriter, r *http.Request
 //	@Failure		400		{object}	object
 //	@Failure		404		{object}	object
 //	@Failure		500		{object}	object
+//	@Security		ApiKeyAuth
 //	@Router			/users/{userID}/unfollow [put]
 func (app *application) unfollowUserHandler(w http.ResponseWriter, r *http.Request) {
 	unfollowedUser := getUserFromCtx(r)

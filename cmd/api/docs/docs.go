@@ -137,6 +137,11 @@ const docTemplate = `{
         },
         "/posts": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Creates a new post",
                 "consumes": [
                     "application/json"
@@ -183,6 +188,11 @@ const docTemplate = `{
         },
         "/posts/{postID}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieves a post by ID with its comments",
                 "consumes": [
                     "application/json"
@@ -225,6 +235,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Deletes a post by ID",
                 "consumes": [
                     "application/json"
@@ -264,6 +279,11 @@ const docTemplate = `{
                 }
             },
             "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Partially updates a post's title and/or content",
                 "consumes": [
                     "application/json"
@@ -323,6 +343,11 @@ const docTemplate = `{
         },
         "/posts/{postID}/comments": {
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Adds a comment to a post",
                 "consumes": [
                     "application/json"
@@ -431,6 +456,11 @@ const docTemplate = `{
         },
         "/users/feed": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieves paginated feed for the authenticated user",
                 "consumes": [
                     "application/json"
@@ -557,6 +587,11 @@ const docTemplate = `{
         },
         "/users/{userID}/follow": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Follows a user",
                 "consumes": [
                     "application/json"
@@ -619,6 +654,11 @@ const docTemplate = `{
         },
         "/users/{userID}/unfollow": {
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Unfollows a user",
                 "consumes": [
                     "application/json"
@@ -784,8 +824,14 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "isActive": {
+                "is_active": {
                     "type": "boolean"
+                },
+                "role": {
+                    "$ref": "#/definitions/store.Role"
+                },
+                "role_id": {
+                    "type": "integer"
                 },
                 "token": {
                     "type": "string"
@@ -903,6 +949,23 @@ const docTemplate = `{
                 }
             }
         },
+        "store.Role": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "level": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
         "store.User": {
             "type": "object",
             "properties": {
@@ -915,8 +978,14 @@ const docTemplate = `{
                 "id": {
                     "type": "integer"
                 },
-                "isActive": {
+                "is_active": {
                     "type": "boolean"
+                },
+                "role": {
+                    "$ref": "#/definitions/store.Role"
+                },
+                "role_id": {
+                    "type": "integer"
                 },
                 "username": {
                     "type": "string"

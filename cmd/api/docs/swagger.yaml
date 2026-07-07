@@ -76,8 +76,12 @@ definitions:
         type: string
       id:
         type: integer
-      isActive:
+      is_active:
         type: boolean
+      role:
+        $ref: '#/definitions/store.Role'
+      role_id:
+        type: integer
       token:
         type: string
       username:
@@ -154,6 +158,17 @@ definitions:
       version:
         type: integer
     type: object
+  store.Role:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      level:
+        type: integer
+      name:
+        type: string
+    type: object
   store.User:
     properties:
       created_at:
@@ -162,8 +177,12 @@ definitions:
         type: string
       id:
         type: integer
-      isActive:
+      is_active:
         type: boolean
+      role:
+        $ref: '#/definitions/store.Role'
+      role_id:
+        type: integer
       username:
         type: string
     type: object
@@ -281,6 +300,8 @@ paths:
           description: Internal Server Error
           schema:
             type: object
+      security:
+      - ApiKeyAuth: []
       summary: Create a post
       tags:
       - posts
@@ -308,6 +329,8 @@ paths:
           description: Internal Server Error
           schema:
             type: object
+      security:
+      - ApiKeyAuth: []
       summary: Delete a post
       tags:
       - posts
@@ -336,6 +359,8 @@ paths:
           description: Internal Server Error
           schema:
             type: object
+      security:
+      - ApiKeyAuth: []
       summary: Get a post
       tags:
       - posts
@@ -374,6 +399,8 @@ paths:
           description: Internal Server Error
           schema:
             type: object
+      security:
+      - ApiKeyAuth: []
       summary: Update a post
       tags:
       - posts
@@ -413,6 +440,8 @@ paths:
           description: Internal Server Error
           schema:
             type: object
+      security:
+      - ApiKeyAuth: []
       summary: Add a comment
       tags:
       - comments
@@ -483,6 +512,8 @@ paths:
           description: Internal Server Error
           schema:
             type: object
+      security:
+      - ApiKeyAuth: []
       summary: Follow a user
       tags:
       - users
@@ -520,6 +551,8 @@ paths:
           description: Internal Server Error
           schema:
             type: object
+      security:
+      - ApiKeyAuth: []
       summary: Unfollow a user
       tags:
       - users
@@ -605,6 +638,8 @@ paths:
           description: Internal Server Error
           schema:
             type: object
+      security:
+      - ApiKeyAuth: []
       summary: Get user feed
       tags:
       - feed

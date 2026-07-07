@@ -37,6 +37,7 @@ type UpdatePostPayload struct {
 //	@Success		201		{object}	store.Post
 //	@Failure		400		{object}	object
 //	@Failure		500		{object}	object
+//	@Security		ApiKeyAuth
 //	@Router			/posts [post]
 func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request) {
 	var payload CreatePostPayload
@@ -83,6 +84,7 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 //	@Success		200		{object}	store.Post
 //	@Failure		404		{object}	object
 //	@Failure		500		{object}	object
+//	@Security		ApiKeyAuth
 //	@Router			/posts/{postID} [get]
 func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -104,7 +106,7 @@ func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 
 // DeletePost godoc
 //
-//	@Summary		Delete a post
+//	@Summary		Deletes a post
 //	@Description	Deletes a post by ID
 //	@Tags			posts
 //	@Accept			json
@@ -113,6 +115,7 @@ func (app *application) getPostHandler(w http.ResponseWriter, r *http.Request) {
 //	@Success		204		"No Content"
 //	@Failure		404		{object}	object
 //	@Failure		500		{object}	object
+//	@Security		ApiKeyAuth
 //	@Router			/posts/{postID} [delete]
 func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request) {
 
@@ -151,6 +154,7 @@ func (app *application) deletePostHandler(w http.ResponseWriter, r *http.Request
 //	@Failure		400		{object}	object
 //	@Failure		404		{object}	object
 //	@Failure		500		{object}	object
+//	@Security		ApiKeyAuth
 //	@Router			/posts/{postID} [patch]
 func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request) {
 	post := getPostFromCtx(r)
