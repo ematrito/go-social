@@ -99,7 +99,7 @@ func (app *application) checkPostOwnershipMiddleware(requiredRole string, next h
 		user := getUserFromCtx(r)
 		post := getPostFromCtx(r)
 
-		if post.UserID == user.ID {
+		if post.UserID == user.ID { // a user can delete his own post
 			next.ServeHTTP(w, r)
 			return
 		}
