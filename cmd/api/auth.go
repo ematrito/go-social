@@ -158,6 +158,12 @@ func (app *application) createTokenHandler(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
+	// password check needed. If user.password.hash != paylod.password.hash -> unauthorized
+	if err := user.Password.PasswordCheck(payload.Password); err != nil {
+		app.unauthorizedErrorResponse(w, r, err)
+		return
+	}
+
 	// generate the token -> add claims
 	claims := jwt.MapClaims{
 		"sub": user.ID,

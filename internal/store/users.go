@@ -42,6 +42,15 @@ func (p *password) Set(text string) error {
 	return nil
 }
 
+func (p *password) PasswordCheck(passwordToCompare string) error {
+	err := bcrypt.CompareHashAndPassword(p.hash, []byte(passwordToCompare))
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 type UserStore struct {
 	db *sql.DB
 }
