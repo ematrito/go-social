@@ -4,6 +4,7 @@ import (
 	"github/ematrito/go-social/internal/auth"
 	"github/ematrito/go-social/internal/mailer"
 	"github/ematrito/go-social/internal/store"
+	"github/ematrito/go-social/internal/store/cache"
 	"net/http"
 	"time"
 
@@ -23,6 +24,7 @@ type application struct {
 	logger        *zap.SugaredLogger
 	mailer        mailer.Client
 	authenticator auth.Authenticator
+	cacheStorage  cache.Storage
 }
 
 type config struct {
@@ -33,6 +35,14 @@ type config struct {
 	mail        mailConfig
 	frontendURL string
 	auth        authConfig
+	redisCfg    redisConfig
+}
+
+type redisConfig struct {
+	addr    string
+	pw      string
+	db      int
+	enabled bool
 }
 
 type authConfig struct {
