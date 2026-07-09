@@ -331,7 +331,7 @@ paths:
             type: object
       security:
       - ApiKeyAuth: []
-      summary: Delete a post
+      summary: Deletes a post
       tags:
       - posts
     get:
@@ -471,6 +471,8 @@ paths:
           description: Internal Server Error
           schema:
             type: object
+      security:
+      - ApiKeyAuth: []
       summary: Get a user
       tags:
       - users
@@ -582,8 +584,6 @@ paths:
           description: Internal Server Error
           schema:
             type: object
-      security:
-      - ApiKeyAuth: []
       summary: Activate a user
       tags:
       - users

@@ -250,7 +250,7 @@ const docTemplate = `{
                 "tags": [
                     "posts"
                 ],
-                "summary": "Delete a post",
+                "summary": "Deletes a post",
                 "parameters": [
                     {
                         "type": "integer",
@@ -407,11 +407,6 @@ const docTemplate = `{
         },
         "/users/activate/{token}": {
             "put": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
                 "description": "Activates a user account via invitation token",
                 "consumes": [
                     "application/json"
@@ -543,6 +538,11 @@ const docTemplate = `{
         },
         "/users/{userID}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Retrieves a user by ID",
                 "consumes": [
                     "application/json"
