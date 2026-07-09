@@ -20,3 +20,7 @@ seed:
 .PHONY: gen-docs
 gen-docs:
 	@swag init -g cmd/api/main.go --parseInternal --output cmd/api/docs && swag fmt
+
+.PHONY: test
+test:
+	@go test -v ./...
