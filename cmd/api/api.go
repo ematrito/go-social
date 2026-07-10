@@ -1,11 +1,16 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"github/ematrito/go-social/internal/auth"
 	"github/ematrito/go-social/internal/mailer"
 	"github/ematrito/go-social/internal/store"
 	"github/ematrito/go-social/internal/store/cache"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 	"time"
 
 	"github/ematrito/go-social/cmd/api/docs"
@@ -161,7 +166,36 @@ func (app *application) run(mux http.Handler) error {
 		IdleTimeout:  time.Minute,
 	}
 
+	shutdown := make(chan error)
+
+	go func() {
+		quit := make(chan os.Signal, 1)
+
+		signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+
+		s := <-quit // blocks the goroutine until the signal arrives in quit channel, GETS signal FROM quit channel
+
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+
+		app.logger.Infow("signal caught", "signal", s.String())
+
+		shutdown <- srv.Shutdown(ctx) // sends error returned from srv.Shutdown() TO shutdown channel
+	}()
+
 	app.logger.Infow("Server is running on", "addr", app.config.addr)
 
-	return srv.ListenAndServe()
+	err := srv.ListenAndServe()
+	if !errors.Is(err, http.ErrServerClosed) {
+		return err
+	}
+
+	err = <-shutdown // updates err variable with the error PICKED FROM shutdown channel (error returned from srv.Shutdown())
+	if err != nil {
+		return err
+	}
+
+	app.logger.Infow("Server has stopped", "addr", app.config.addr)
+
+	return nil
 }
