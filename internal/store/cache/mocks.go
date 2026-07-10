@@ -5,18 +5,18 @@ import (
 	"github/ematrito/go-social/internal/store"
 )
 
-func NewMockStore() Storage {
+func NewMockCacheStore() Storage {
 	return Storage{
-		Users: &MockUserStore{},
+		Users: &MockCacheUserStore{},
 	}
 }
 
-type MockUserStore struct{}
+type MockCacheUserStore struct{}
 
-func (m *MockUserStore) Get(ctx context.Context, id int64) (*store.User, error) {
+func (m *MockCacheUserStore) Get(ctx context.Context, id int64) (*store.User, error) {
 	return nil, nil
 }
 
-func (m *MockUserStore) Set(ctx context.Context, user *store.User) error {
+func (m *MockCacheUserStore) Set(ctx context.Context, user *store.User) error {
 	return nil
 }

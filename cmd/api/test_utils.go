@@ -2,6 +2,7 @@ package main
 
 import (
 	"github/ematrito/go-social/internal/auth"
+	"github/ematrito/go-social/internal/mailer"
 	"github/ematrito/go-social/internal/store"
 	"github/ematrito/go-social/internal/store/cache"
 	"net/http"
@@ -16,7 +17,7 @@ func NewTestApplication(t *testing.T) *application {
 
 	logger := zap.NewNop().Sugar()
 	mockStore := store.NewMockStore()
-	mockCacheStore := cache.NewMockStore()
+	mockCacheStore := cache.NewMockCacheStore()
 	testAuth := &auth.TestAuthenticator{}
 
 	return &application{
@@ -24,6 +25,7 @@ func NewTestApplication(t *testing.T) *application {
 		store:         mockStore,
 		cacheStorage:  mockCacheStore,
 		authenticator: testAuth,
+		mailer:        &mailer.MockMailer{},
 	}
 }
 
