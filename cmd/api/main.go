@@ -5,6 +5,7 @@ import (
 	"github/ematrito/go-social/internal/db"
 	"github/ematrito/go-social/internal/env"
 	"github/ematrito/go-social/internal/mailer"
+	"github/ematrito/go-social/internal/ratelimiter"
 	"github/ematrito/go-social/internal/store"
 	"github/ematrito/go-social/internal/store/cache"
 	"time"
@@ -72,6 +73,11 @@ func main() {
 				iss:    "gophersocial",
 			},
 		},
+		rateLimiter: ratelimiter.Config{
+			RequestsPerTimeFrame: env.GetInt("RATE_LIMITER_REQUESTS_COUNT", 20),
+			TimeFrame:            time.Second * 5,
+			Enabled:              env.GetBool("RATE_LIMITER_ENABLED", true),
+		},
 	}
 
 	// Logger
@@ -97,6 +103,12 @@ func main() {
 	}
 	cacheStorage := cache.NewRedisStorage(redisDB)
 
+	// Rate Limiter
+	rateLimiter := ratelimiter.NewFixedWindowRateLimiter(
+		cfg.rateLimiter.RequestsPerTimeFrame,
+		cfg.rateLimiter.TimeFrame,
+	)
+
 	jwtAuthenticator := auth.NewJWTAuthenticator(cfg.auth.token.secret, cfg.auth.token.iss, cfg.auth.token.iss)
 
 	var emailClient mailer.Client
@@ -119,6 +131,7 @@ func main() {
 		mailer:        emailClient,
 		authenticator: jwtAuthenticator,
 		cacheStorage:  cacheStorage,
+		rateLimiter:   rateLimiter,
 	}
 
 	mux := app.mount()

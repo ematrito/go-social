@@ -5,6 +5,7 @@ import (
 	"errors"
 	"github/ematrito/go-social/internal/auth"
 	"github/ematrito/go-social/internal/mailer"
+	"github/ematrito/go-social/internal/ratelimiter"
 	"github/ematrito/go-social/internal/store"
 	"github/ematrito/go-social/internal/store/cache"
 	"net/http"
@@ -30,6 +31,7 @@ type application struct {
 	mailer        mailer.Client
 	authenticator auth.Authenticator
 	cacheStorage  cache.Storage
+	rateLimiter   ratelimiter.Limiter
 }
 
 type config struct {
@@ -41,6 +43,7 @@ type config struct {
 	frontendURL string
 	auth        authConfig
 	redisCfg    redisConfig
+	rateLimiter ratelimiter.Config
 }
 
 type redisConfig struct {
@@ -100,6 +103,7 @@ func (app *application) mount() http.Handler {
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
+	r.Use(app.RateLimiterMiddleware)
 
 	//  Set a timeout value on the request context (ctx), that will signal
 	//  through ctx.Done() that the request has timed out and further
