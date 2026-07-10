@@ -9,7 +9,7 @@ import (
 
 func TestGetUser(t *testing.T) {
 
-	app := NewTestApplication(t)
+	app := NewTestApplication(t, config{})
 	mux := app.mount()
 
 	token, err := app.authenticator.GenerateToken(nil)
@@ -41,7 +41,7 @@ func TestGetUser(t *testing.T) {
 	})
 }
 func TestRegisterUser(t *testing.T) {
-	app := NewTestApplication(t)
+	app := NewTestApplication(t, config{})
 	mux := app.mount()
 
 	payload := RegisterUserPayload{

@@ -3,22 +3,25 @@ package main
 import (
 	"github/ematrito/go-social/internal/auth"
 	"github/ematrito/go-social/internal/mailer"
+	"github/ematrito/go-social/internal/ratelimiter"
 	"github/ematrito/go-social/internal/store"
 	"github/ematrito/go-social/internal/store/cache"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+	"time"
 
 	"go.uber.org/zap"
 )
 
-func NewTestApplication(t *testing.T) *application {
+func NewTestApplication(t *testing.T, cfg config) *application {
 	t.Helper()
 
 	logger := zap.NewNop().Sugar()
 	mockStore := store.NewMockStore()
 	mockCacheStore := cache.NewMockCacheStore()
 	testAuth := &auth.TestAuthenticator{}
+	rateLimiter := ratelimiter.NewFixedWindowRateLimiter(20, time.Second*5)
 
 	return &application{
 		logger:        logger,
@@ -26,6 +29,7 @@ func NewTestApplication(t *testing.T) *application {
 		cacheStorage:  mockCacheStore,
 		authenticator: testAuth,
 		mailer:        &mailer.MockMailer{},
+		rateLimiter:   rateLimiter,
 	}
 }
 
