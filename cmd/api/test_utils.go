@@ -30,6 +30,7 @@ func NewTestApplication(t *testing.T, cfg config) *application {
 		authenticator: testAuth,
 		mailer:        &mailer.MockMailer{},
 		rateLimiter:   rateLimiter,
+		config:        cfg,
 	}
 }
 
