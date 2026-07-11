@@ -102,21 +102,23 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		Username:      user.Username,
 		ActivationURL: activationURL,
 	}
-	// send email
-	status, err := app.mailer.Send(mailer.UserWelcomeTemplate, user.Username, user.Email, vars)
-	if err != nil {
-		app.logger.Errorw("error sending welcome email", "error", err, "status", status)
+	// send asynchronous email
+	go func() {
+		status, err := app.mailer.Send(mailer.UserWelcomeTemplate, user.Username, user.Email, vars)
+		if err != nil {
+			app.logger.Errorw("error sending welcome email", "error", err, "status", status)
 
-		// rolls back user creation (SAGA)
-		if err := app.store.Users.Delete(ctx, user.ID); err != nil {
-			app.logger.Errorw("error deleting user", "error", err)
+			// rolls back user creation (SAGA)
+			if err := app.store.Users.Delete(ctx, user.ID); err != nil {
+				app.logger.Errorw("error deleting user", "error", err)
+			}
+
+			app.internalServerError(w, r, err)
+			return
 		}
 
-		app.internalServerError(w, r, err)
-		return
-	}
-
-	app.logger.Infow("Email sent", "status code", status)
+		app.logger.Infow("Email sent", "status code", status)
+	}()
 
 	if err := app.jsonResponse(w, http.StatusCreated, userWithToken); err != nil {
 		app.internalServerError(w, r, err)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"github/ematrito/go-social/internal/auth"
+	"github/ematrito/go-social/internal/env"
 	"github/ematrito/go-social/internal/mailer"
 	"github/ematrito/go-social/internal/ratelimiter"
 	"github/ematrito/go-social/internal/store"
@@ -91,14 +92,13 @@ func (app *application) mount() http.Handler {
 
 	r.Use(cors.Handler(cors.Options{
 
-		AllowedOrigins:   []string{"http://*", "https://*"},
+		AllowedOrigins:   []string{env.GetString("CORS_ALLOWED_ORIGIN", "http://localhost:5173")},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
 		ExposedHeaders:   []string{"Link"},
 		AllowCredentials: false,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
-
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
 	r.Use(middleware.Logger)
