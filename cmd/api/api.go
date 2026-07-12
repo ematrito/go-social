@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"errors"
+	"expvar"
+	"fmt"
 	"github/ematrito/go-social/internal/auth"
 	"github/ematrito/go-social/internal/env"
 	"github/ematrito/go-social/internal/mailer"
@@ -111,9 +113,11 @@ func (app *application) mount() http.Handler {
 	r.Use(middleware.Timeout(60 * time.Second))
 
 	r.Route("/v1", func(r chi.Router) {
-		r.With(app.BasicAuthMiddleware()).Get("/health", app.healthCheckHandler)
+		r.Get("/health", app.healthCheckHandler)
+		r.With(app.BasicAuthMiddleware()).Get("/metrics", expvar.Handler().ServeHTTP)
 
-		r.Get("/swagger/*", httpSwagger.Handler())
+		docsURL := fmt.Sprintf("%s/swagger/doc.json", app.config.addr)
+		r.Get("/swagger/*", httpSwagger.Handler(httpSwagger.URL(docsURL)))
 
 		r.Route("/posts", func(r chi.Router) {
 			r.Use(app.AuthTokenMiddleware)

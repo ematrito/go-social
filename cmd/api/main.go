@@ -1,6 +1,7 @@
 package main
 
 import (
+	"expvar"
 	"github/ematrito/go-social/internal/auth"
 	"github/ematrito/go-social/internal/db"
 	"github/ematrito/go-social/internal/env"
@@ -8,6 +9,7 @@ import (
 	"github/ematrito/go-social/internal/ratelimiter"
 	"github/ematrito/go-social/internal/store"
 	"github/ematrito/go-social/internal/store/cache"
+	"runtime"
 	"time"
 
 	_ "github/ematrito/go-social/cmd/api/docs"
@@ -64,11 +66,11 @@ func main() {
 		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:5174"),
 		auth: authConfig{
 			basic: basicConfig{
-				user: env.GetString("AUTH_BASIC_USER", "admin"), // REMEMBER TO SET IN ENV
-				pass: env.GetString("AUTH_BASIC_PASS", "admin"), // REMEMBER TO SET IN ENV
+				user: env.GetString("AUTH_BASIC_USER", "admin"), // TODO: SET IN ENV
+				pass: env.GetString("AUTH_BASIC_PASS", "admin"), // TODO: SET IN ENV
 			},
 			token: tokenConfig{
-				secret: env.GetString("AUTH_TOKEN_SECRET", "example"), // REMEMBER TO SET A SECRET IN ENV
+				secret: env.GetString("AUTH_TOKEN_SECRET", "example"), // TODO: SET A SECRET IN ENV
 				exp:    time.Hour * 24 * 3,                            // 3 days
 				iss:    "gophersocial",
 			},
@@ -133,6 +135,15 @@ func main() {
 		cacheStorage:  cacheStorage,
 		rateLimiter:   rateLimiter,
 	}
+
+	// Metrics collected
+	expvar.NewString("version").Set(version)
+	expvar.Publish("database", expvar.Func(func() any {
+		return db.Stats()
+	}))
+	expvar.Publish("goroutines", expvar.Func(func() any {
+		return runtime.NumGoroutine()
+	}))
 
 	mux := app.mount()
 
