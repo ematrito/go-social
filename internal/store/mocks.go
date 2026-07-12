@@ -14,7 +14,7 @@ func NewMockStore() Storage {
 
 // TODO: complete test methods implementation
 type MockUserStore struct {
-	users []User
+	// users []User
 }
 
 func (m *MockUserStore) Create(ctx context.Context, tx *sql.Tx, u *User) error {

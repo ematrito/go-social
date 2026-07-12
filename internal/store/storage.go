@@ -8,8 +8,8 @@ import (
 )
 
 var (
-	ErrNotFound          = errors.New("Resource not found.")
-	ErrConflict          = errors.New("duplicate key value violates unique constraint.")
+	ErrNotFound          = errors.New("resource not found")
+	ErrConflict          = errors.New("duplicate key value violates unique constraint")
 	QueryTimeoutDuration = time.Second * 5
 )
 
