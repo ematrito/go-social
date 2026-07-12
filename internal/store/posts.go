@@ -18,7 +18,7 @@ type Post struct {
 	UpdatedAt string    `json:"updated_at"`
 	Version   int       `json:"version"`
 	Comments  []Comment `json:"comments"`
-	User      User      `json:user`
+	User      User      `json:"user"`
 }
 
 type PostWithMetadata struct {
