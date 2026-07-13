@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/ematrito/go-social/compare/v1.0.0...v1.1.0) (2026-07-13)
+
+
+### Features
+
+* adds dockerfile ([62cec95](https://github.com/ematrito/go-social/commit/62cec95246828da4e125c9b202e86756fd6ecdb0))
+* updates update-api-version.yaml ([98eb9d7](https://github.com/ematrito/go-social/commit/98eb9d757206d8473c28f4e1ace9a069d24ed4a5))
+
 ## 1.0.0 (2026-07-13)
 
 
