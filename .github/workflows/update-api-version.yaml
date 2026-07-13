@@ -17,13 +17,19 @@ jobs:
         id: get_version
         run: |
           VERSION=$(grep -oP '\[\K[0-9]+\.[0-9]+\.[0-9]+' CHANGELOG.md | head -1)
+          if [ -z "$VERSION" ]; then
+            echo "No version found, skipping"
+            exit 0
+          fi
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
       - name: Update version in cmd/api/main.go
+        if: steps.get_version.outputs.VERSION != ''
         run: |
           sed -i "s/const version = \".*\"/const version = \"${{ steps.get_version.outputs.VERSION }}\"/" cmd/api/main.go
 
       - name: Commit and push if changed
+        if: steps.get_version.outputs.VERSION != ''
         run: |
           git config --global user.email "action@github.com"
           git config --global user.name "GitHub Action"
