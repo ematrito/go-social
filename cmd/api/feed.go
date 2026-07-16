@@ -45,11 +45,21 @@ func (app *application) getUserFeedHandler(w http.ResponseWriter, r *http.Reques
 
 	ctx := r.Context()
 
-	feed, err := app.store.Posts.GetUserFeed(ctx, int64(42), fq)
+	user := getUserFromCtx(r)
+	feed, err := app.store.Posts.GetUserFeed(ctx, user.ID, fq)
 	if err != nil {
 		app.internalServerError(w, r, err)
 		return
 	}
+
+	if len(feed) == 0 {
+		feed, err = app.store.Posts.GetRecentPosts(ctx, user.ID, fq)
+		if err != nil {
+			app.internalServerError(w, r, err)
+			return
+		}
+	}
+
 	if err := app.jsonResponse(w, http.StatusOK, feed); err != nil {
 		app.internalServerError(w, r, err)
 	}
