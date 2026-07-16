@@ -23,7 +23,8 @@ type Post struct {
 
 type PostWithMetadata struct {
 	Post
-	CommentCount int `json:"comment_count"`
+	CommentCount int  `json:"comment_count"`
+	IsFollowing  bool `json:"is_following"`
 }
 
 type PostStore struct {
@@ -151,13 +152,14 @@ func (s *PostStore) GetUserFeed(ctx context.Context, userID int64, fq PaginatedF
 	query := `
 		SELECT 
 			p.id, p.user_id, p.title, p.content, p.created_at, p.version, p.tags, u.username,
-	 	COUNT(c.id) AS comments_count 
+	 	COUNT(c.id) AS comments_count, 
+		EXISTS(SELECT 1 FROM followers WHERE follower_id = $1 AND user_id = p.user_id) AS is_following
 		FROM posts p
 		LEFT JOIN comments c ON c.post_id = p.id
 		LEFT JOIN users u ON p.user_id = u.id
-		JOIN followers f ON  f.user_id = p.user_id OR p.user_id = $1
+		JOIN followers f ON  f.user_id = p.user_id 
 		WHERE 
-			f.follower_id = $1 
+			(f.follower_id = $1 OR p.user_id = $1)
 			AND
 			(p.title ILIKE '%' || $4 || '%' OR p.content ILIKE '%' || $4 || '%')
 			AND (p.tags @> $5 OR $5 = '{}')
@@ -174,7 +176,9 @@ func (s *PostStore) GetUserFeed(ctx context.Context, userID int64, fq PaginatedF
 	}
 
 	defer rows.Close()
-	var feed []PostWithMetadata
+
+	feed := []PostWithMetadata{}
+
 	for rows.Next() {
 		var p PostWithMetadata
 		err := rows.Scan(
@@ -187,6 +191,53 @@ func (s *PostStore) GetUserFeed(ctx context.Context, userID int64, fq PaginatedF
 			pq.Array(&p.Tags),
 			&p.User.Username,
 			&p.CommentCount,
+			&p.IsFollowing,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		feed = append(feed, p)
+	}
+	return feed, nil
+}
+
+func (s *PostStore) GetRecentPosts(ctx context.Context, userID int64, fq PaginatedFeedQuery) ([]PostWithMetadata, error) {
+	query := `
+		SELECT p.id, p.user_id, p.title, p.content, p.created_at, p.version, p.tags, u.username,
+       COUNT(c.id) AS comments_count,
+       EXISTS(SELECT 1 FROM followers WHERE follower_id = $1 AND user_id = p.user_id) AS is_following
+			FROM posts p
+			LEFT JOIN comments c ON c.post_id = p.id
+			LEFT JOIN users u ON p.user_id = u.id
+		GROUP BY p.id, u.username
+		ORDER BY p.created_at DESC
+		LIMIT $2 OFFSET $3	 
+	`
+	ctx, cancel := context.WithTimeout(ctx, QueryTimeoutDuration)
+	defer cancel()
+
+	rows, err := s.db.QueryContext(ctx, query, userID, fq.Limit, fq.Offset)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	feed := []PostWithMetadata{}
+
+	for rows.Next() {
+		var p PostWithMetadata
+		err := rows.Scan(
+			&p.ID,
+			&p.UserID,
+			&p.Title,
+			&p.Content,
+			&p.CreatedAt,
+			&p.Version,
+			pq.Array(&p.Tags),
+			&p.User.Username,
+			&p.CommentCount,
+			&p.IsFollowing,
 		)
 		if err != nil {
 			return nil, err
