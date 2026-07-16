@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
@@ -108,12 +109,13 @@ func (app *application) registerUserHandler(w http.ResponseWriter, r *http.Reque
 		if err != nil {
 			app.logger.Errorw("error sending welcome email", "error", err, "status", status)
 
+			bgCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+			defer cancel()
+
 			// rolls back user creation (SAGA)
-			if err := app.store.Users.Delete(ctx, user.ID); err != nil {
+			if err := app.store.Users.Delete(bgCtx, user.ID); err != nil {
 				app.logger.Errorw("error deleting user", "error", err)
 			}
-
-			app.internalServerError(w, r, err)
 			return
 		}
 
