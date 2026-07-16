@@ -1,13 +1,33 @@
-import './App.css'
-
-
-export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:8080/v1"
+import { Outlet, Link, useNavigate } from 'react-router-dom'
+import { useAuth } from './AuthContext'
 
 function App() {
+  const { isAuthenticated, user, logout } = useAuth()
+  const navigate = useNavigate()
+
   return (
-    <>
-      <div>App home screen</div>
-    </>
+    <div id="app">
+      <nav>
+        <Link to="/" className="nav-brand">GopherSocial</Link>
+        <div className="nav-links">
+          {isAuthenticated ? (
+            <>
+              <span className="nav-user">{user?.username}</span>
+              <Link to="/posts/new">+ New Post</Link>
+              <button onClick={() => { logout(); navigate('/login') }}>Logout</button>
+            </>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/register">Register</Link>
+            </>
+          )}
+        </div>
+      </nav>
+      <main>
+        <Outlet />
+      </main>
+    </div>
   )
 }
 

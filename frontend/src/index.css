@@ -110,3 +110,391 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* Layout */
+#app {
+  width: 100%;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+#app > nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+#app > main {
+  flex: 1;
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 24px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.nav-brand {
+  font-family: var(--heading);
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--text-h);
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-links a,
+.nav-links button {
+  font-size: 15px;
+  color: var(--text);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-weight: 400;
+}
+
+.nav-links a:hover,
+.nav-links button:hover {
+  color: var(--accent);
+}
+
+.nav-user {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* Forms */
+.form-page {
+  max-width: 400px;
+  margin: 48px auto 0;
+}
+
+.form-page h1 {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+form input,
+form textarea,
+form select {
+  font: inherit;
+  font-size: 15px;
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-h);
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+  border-color: var(--accent-border);
+}
+
+form textarea {
+  resize: vertical;
+}
+
+form button,
+.btn-secondary,
+.btn-danger {
+  font: inherit;
+  font-size: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+form button:hover:not(:disabled),
+.btn-secondary:hover:not(:disabled),
+.btn-danger:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: var(--social-bg);
+  color: var(--text-h);
+  border: 1px solid var(--border);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-danger {
+  background: #dc2626;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.error-msg {
+  color: #dc2626;
+  font-size: 14px;
+  padding: 8px 12px;
+  background: rgba(220, 38, 38, 0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+.success-msg {
+  color: #16a34a;
+  font-size: 15px;
+  padding: 12px;
+  background: rgba(22, 163, 74, 0.08);
+  border-radius: 6px;
+  border: 1px solid rgba(22, 163, 74, 0.2);
+}
+
+.empty-msg {
+  color: var(--text);
+  font-size: 15px;
+  padding: 24px 0;
+}
+
+.page-center {
+  text-align: center;
+  padding: 48px 0;
+}
+
+/* Feed */
+.feed-header {
+  margin-bottom: 24px;
+}
+
+.feed-header h1 {
+  margin: 0 0 16px;
+}
+
+.feed-controls {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.search-form {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  flex: 1;
+}
+
+.search-form input {
+  flex: 1;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-card {
+  display: block;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.post-card:hover {
+  box-shadow: var(--shadow);
+  border-color: var(--accent-border);
+}
+
+.post-card h2 {
+  margin: 0 0 8px;
+}
+
+.post-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 13px;
+  color: var(--text);
+  flex-wrap: wrap;
+}
+
+.post-tags {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.tag {
+  font-size: 12px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+.post-card-wrapper {
+  position: relative;
+}
+
+.post-card-wrapper .follow-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+}
+
+.follow-btn {
+  font: inherit;
+  font-size: 13px;
+  padding: 4px 14px;
+  border: 1px solid var(--accent-border);
+  border-radius: 6px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+  transition: background 0.2s;
+  margin: 4px 0;
+}
+
+.follow-btn:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+.follow-btn.following {
+  background: var(--accent);
+  color: #fff;
+}
+
+.follow-btn.following:hover {
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+
+/* Post detail */
+.post-detail {
+  padding-bottom: 48px;
+}
+
+.back-link {
+  display: inline-block;
+  color: var(--text);
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.back-link:hover {
+  color: var(--accent);
+}
+
+.post-full {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 24px;
+}
+
+.post-full-header {
+  margin-bottom: 16px;
+}
+
+.post-full-header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.post-content {
+  font-size: 16px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  margin-bottom: 20px;
+  color: var(--text-h);
+}
+
+.post-actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+/* Comments */
+.comments-section {
+  margin-top: 32px;
+}
+
+.comments-section h2 {
+  margin-bottom: 16px;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment {
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.comment-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
+.comment p {
+  font-size: 15px;
+  color: var(--text-h);
+}
+
+.comment-form {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.comment-form textarea {
+  flex: 1;
+  min-height: 60px;
+}
