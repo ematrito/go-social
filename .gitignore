@@ -1,1 +1,16 @@
 .envrc
+.env
+.env.*
+
+bin/
+dist/
+tmp/
+
+*.log
+
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store

@@ -1,0 +1,37 @@
+# Server
+export ADDR=":8080"
+export ENV=development
+export EXTERNAL_URL=localhost:8080
+
+# Authentication (CHANGE THESE for production!)
+export AUTH_BASIC_USER=dev
+export AUTH_BASIC_PASS=dev
+export AUTH_TOKEN_SECRET=generate-a-random-secret-for-production
+
+# Database
+export POSTGRES_DB=social
+export POSTGRES_USER=admin
+export POSTGRES_PASSWORD=adminpassword
+export DB_ADDR=postgres://admin:adminpassword@localhost/social?sslmode=disable
+export DB_MAX_OPEN_CONNS=30
+export DB_MAX_IDLE_CONNS=30
+export DB_MAX_IDLE_TIME=15m
+
+# Redis (set REDIS_ENABLED=true to enable)
+export REDIS_ADDR=localhost:6379
+export REDIS_ENABLED=false
+
+# Mailer (development uses Mailpit by default)
+export FROM_EMAIL=noreply@example.com
+export SENDGRID_API_KEY=
+export MAILPIT_SMTP_ADDR=localhost:1025
+
+# Frontend
+export FRONTEND_URL=http://localhost:5173
+
+# Rate Limiter
+export RATE_LIMITER_ENABLED=true
+export RATE_LIMITER_REQUESTS_COUNT=20
+
+# CORS
+export CORS_ALLOWED_ORIGIN=http://localhost:5173

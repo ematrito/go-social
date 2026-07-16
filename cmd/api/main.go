@@ -44,7 +44,7 @@ func main() {
 		addr:   env.GetString("ADDR", ":8080"),
 		apiURL: env.GetString("EXTERNAL_URL", "localhost:8080"),
 		db: dbConfig{
-			addr:         env.GetString("DB_ADDR", "postgres://admin:adminpassword@localhost/social?sslmode=disable"),
+			addr:         env.GetString("DB_ADDR", "postgres://postgres:postgres@localhost/social?sslmode=disable"),
 			maxOpenConns: env.GetInt("DB_MAX_OPEN_CONNS", 30),
 			maxIdleConns: env.GetInt("DB_MAX_IDLE_CONNS", 30),
 			maxIdleTime:  env.GetString("DB_MAX_IDLE_TIME", "15m"),
@@ -66,11 +66,11 @@ func main() {
 		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:5174"),
 		auth: authConfig{
 			basic: basicConfig{
-				user: env.GetString("AUTH_BASIC_USER", "admin"), // TODO: SET IN ENV
-				pass: env.GetString("AUTH_BASIC_PASS", "admin"), // TODO: SET IN ENV
+				user: env.GetString("AUTH_BASIC_USER", "dev"),
+				pass: env.GetString("AUTH_BASIC_PASS", "dev"),
 			},
 			token: tokenConfig{
-				secret: env.GetString("AUTH_TOKEN_SECRET", "example"), // TODO: SET A SECRET IN ENV
+				secret: env.GetString("AUTH_TOKEN_SECRET", "gophersocial-dev-secret"),
 				exp:    time.Hour * 24 * 3,                            // 3 days
 				iss:    "gophersocial",
 			},
