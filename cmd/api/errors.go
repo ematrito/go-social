@@ -16,7 +16,7 @@ func (app *application) badRequestResponse(w http.ResponseWriter, r *http.Reques
 
 func (app *application) notFoundResponse(w http.ResponseWriter, r *http.Request, err error) {
 	app.logger.Warnf("not found error", "method", r.Method, "url", r.URL.Path, "error", err)
-	writeJSONError(w, http.StatusNotFound, "resource not found")
+	writeJSONError(w, http.StatusNotFound, "Resource not found")
 }
 
 func (app *application) conflictResponse(w http.ResponseWriter, r *http.Request, err error) {
@@ -26,19 +26,19 @@ func (app *application) conflictResponse(w http.ResponseWriter, r *http.Request,
 
 func (app *application) unauthorizedErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
 	app.logger.Warnf("unauthorized error", "method", r.Method, "url", r.URL.Path, "error", err)
-	writeJSONError(w, http.StatusUnauthorized, "unauthorized")
+	writeJSONError(w, http.StatusUnauthorized, "Unauthorized")
 }
 
 func (app *application) unauthorizedBasicErrorResponse(w http.ResponseWriter, r *http.Request, err error) {
 	app.logger.Warnf("unauthorized basic error", "method", r.Method, "url", r.URL.Path, "error", err)
 
 	w.Header().Set("WWW-Authenticate", `Basic realm="restricted", charset="UTF-8"`)
-	writeJSONError(w, http.StatusUnauthorized, "unauthorized")
+	writeJSONError(w, http.StatusUnauthorized, "Unauthorized")
 }
 
 func (app *application) forbiddenResponse(w http.ResponseWriter, r *http.Request) {
 	app.logger.Warnf("forbidden", "method", r.Method, "url", r.URL.Path)
-	writeJSONError(w, http.StatusForbidden, "forbidden")
+	writeJSONError(w, http.StatusForbidden, "Forbidden")
 }
 
 func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http.Request, retryAfter string) {
@@ -46,5 +46,5 @@ func (app *application) rateLimitExceededResponse(w http.ResponseWriter, r *http
 
 	w.Header().Set("Retry-After", retryAfter)
 
-	writeJSONError(w, http.StatusTooManyRequests, "rate limit exceeded, retry after: "+retryAfter)
+	writeJSONError(w, http.StatusTooManyRequests, "Rate limit exceeded, retry after: "+retryAfter)
 }
