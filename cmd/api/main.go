@@ -63,7 +63,7 @@ func main() {
 				apiKey: env.GetString("SENDGRID_API_KEY", ""),
 			},
 		},
-		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:5174"),
+		frontendURL: env.GetString("FRONTEND_URL", "http://localhost:5173"),
 		auth: authConfig{
 			basic: basicConfig{
 				user: env.GetString("AUTH_BASIC_USER", "dev"),
@@ -71,7 +71,7 @@ func main() {
 			},
 			token: tokenConfig{
 				secret: env.GetString("AUTH_TOKEN_SECRET", "gophersocial-dev-secret"),
-				exp:    time.Hour * 24 * 3,                            // 3 days
+				exp:    time.Hour * 24 * 3, // 3 days
 				iss:    "gophersocial",
 			},
 		},

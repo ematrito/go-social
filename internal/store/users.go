@@ -8,12 +8,13 @@ import (
 	"errors"
 	"time"
 
+	"github.com/lib/pq"
 	"golang.org/x/crypto/bcrypt"
 )
 
 var (
-	ErrDuplicateEmail    = errors.New("a user with that email already exists")
-	ErrDuplicateUsername = errors.New("a user with that username already exists")
+	ErrDuplicateEmail    = errors.New("A user with that email already exists.")
+	ErrDuplicateUsername = errors.New("A user with that username already exists.")
 )
 
 type User struct {
@@ -84,15 +85,18 @@ func (s *UserStore) Create(ctx context.Context, tx *sql.Tx, user *User) error {
 		&user.ID,
 		&user.CreatedAt,
 	)
+
 	if err != nil {
-		switch {
-		case err.Error() == `pq: duplicate key value violates unique constraint "users_email_key"`:
-			return ErrDuplicateEmail
-		case err.Error() == `pq: duplicate key value violates unique constraint "users_username_key"`:
-			return ErrDuplicateUsername
-		default:
-			return err
+		var pqErr *pq.Error
+		if errors.As(err, &pqErr) && pqErr.Code == "23505" { // standard SQL code for duplicate keys
+			switch pqErr.Constraint {
+			case "users_email_key":
+				return ErrDuplicateEmail
+			case "users_username_key":
+				return ErrDuplicateUsername
+			}
 		}
+		return err
 	}
 
 	return nil
