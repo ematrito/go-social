@@ -1,0 +1,11 @@
+.git
+.env
+.envrc
+*.log
+.cache
+.air.toml
+docker-compose.yml
+Dockerfile
+frontend
+tmp
+*.md
