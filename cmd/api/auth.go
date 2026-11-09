@@ -5,10 +5,11 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
-	"github/ematrito/go-social/internal/mailer"
-	"github/ematrito/go-social/internal/store"
 	"net/http"
 	"time"
+
+	"github.com/ematrito/go-social/internal/mailer"
+	"github.com/ematrito/go-social/internal/store"
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/google/uuid"

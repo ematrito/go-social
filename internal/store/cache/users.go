@@ -4,8 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github/ematrito/go-social/internal/store"
 	"time"
+
+	"github.com/ematrito/go-social/internal/store"
 
 	"github.com/go-redis/redis/v8"
 )

@@ -1,4 +1,4 @@
-module github/ematrito/go-social
+module github.com/ematrito/go-social
 
 go 1.26.1
 

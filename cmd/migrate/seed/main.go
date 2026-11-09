@@ -1,10 +1,11 @@
 package main
 
 import (
-	"github/ematrito/go-social/internal/db"
-	"github/ematrito/go-social/internal/env"
-	"github/ematrito/go-social/internal/store"
 	"log"
+
+	"github.com/ematrito/go-social/internal/db"
+	"github.com/ematrito/go-social/internal/env"
+	"github.com/ematrito/go-social/internal/store"
 )
 
 func main() {

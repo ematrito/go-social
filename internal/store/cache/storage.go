@@ -2,7 +2,8 @@ package cache
 
 import (
 	"context"
-	"github/ematrito/go-social/internal/store"
+
+	"github.com/ematrito/go-social/internal/store"
 
 	"github.com/go-redis/redis/v8"
 )

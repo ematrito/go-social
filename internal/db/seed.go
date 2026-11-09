@@ -4,9 +4,10 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
-	"github/ematrito/go-social/internal/store"
 	"log"
 	"math/rand"
+
+	"github.com/ematrito/go-social/internal/store"
 )
 
 func Seed(store store.Storage, db *sql.DB) {

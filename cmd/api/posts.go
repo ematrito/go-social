@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"errors"
-	"github/ematrito/go-social/internal/store"
 	"net/http"
 	"strconv"
+
+	"github.com/ematrito/go-social/internal/store"
 
 	"github.com/go-chi/chi/v5"
 )

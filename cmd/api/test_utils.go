@@ -1,15 +1,16 @@
 package main
 
 import (
-	"github/ematrito/go-social/internal/auth"
-	"github/ematrito/go-social/internal/mailer"
-	"github/ematrito/go-social/internal/ratelimiter"
-	"github/ematrito/go-social/internal/store"
-	"github/ematrito/go-social/internal/store/cache"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
+
+	"github.com/ematrito/go-social/internal/auth"
+	"github.com/ematrito/go-social/internal/mailer"
+	"github.com/ematrito/go-social/internal/ratelimiter"
+	"github.com/ematrito/go-social/internal/store"
+	"github.com/ematrito/go-social/internal/store/cache"
 
 	"go.uber.org/zap"
 )

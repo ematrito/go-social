@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github/ematrito/go-social/internal/ratelimiter"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 	"time"
+
+	"github.com/ematrito/go-social/internal/ratelimiter"
 )
 
 func TestRateLimiterMiddleware(t *testing.T) {

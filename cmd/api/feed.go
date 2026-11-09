@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github/ematrito/go-social/internal/store"
 	"net/http"
+
+	"github.com/ematrito/go-social/internal/store"
 )
 
 // GetUserFeed godoc

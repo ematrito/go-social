@@ -2,17 +2,18 @@ package main
 
 import (
 	"expvar"
-	"github/ematrito/go-social/internal/auth"
-	"github/ematrito/go-social/internal/db"
-	"github/ematrito/go-social/internal/env"
-	"github/ematrito/go-social/internal/mailer"
-	"github/ematrito/go-social/internal/ratelimiter"
-	"github/ematrito/go-social/internal/store"
-	"github/ematrito/go-social/internal/store/cache"
 	"runtime"
 	"time"
 
-	_ "github/ematrito/go-social/cmd/api/docs"
+	"github.com/ematrito/go-social/internal/auth"
+	"github.com/ematrito/go-social/internal/db"
+	"github.com/ematrito/go-social/internal/env"
+	"github.com/ematrito/go-social/internal/mailer"
+	"github.com/ematrito/go-social/internal/ratelimiter"
+	"github.com/ematrito/go-social/internal/store"
+	"github.com/ematrito/go-social/internal/store/cache"
+
+	_ "github.com/ematrito/go-social/cmd/api/docs"
 
 	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"

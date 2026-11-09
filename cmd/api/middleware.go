@@ -4,10 +4,11 @@ import (
 	"context"
 	"encoding/base64"
 	"fmt"
-	"github/ematrito/go-social/internal/store"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/ematrito/go-social/internal/store"
 
 	"github.com/golang-jwt/jwt/v5"
 )
