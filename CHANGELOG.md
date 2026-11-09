@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.2.0](https://github.com/ematrito/go-social/compare/v1.1.0...v1.2.0) (2026-11-09)
+
+
+### Features
+
+* adds full frontend ([946306d](https://github.com/ematrito/go-social/commit/946306d76258597153a7eb5d43209ceb1275ad03))
+
+
+### Bug Fixes
+
+* fixes empty feed bug ([b990e24](https://github.com/ematrito/go-social/commit/b990e24c5a9c99b13c5a5cdbedf96cc2340b4aa4))
+* fixes post show bug ([472c1f6](https://github.com/ematrito/go-social/commit/472c1f6063e23abc8cdc9fa5a4b083a7a8adc4e5))
+* fixes registerUserHandler email sender goroutine ([abece36](https://github.com/ematrito/go-social/commit/abece36bc4216b9fc292674316ac27b72bba1df9))
+* fixes user activation preventing prefetch from email provider ([452ae12](https://github.com/ematrito/go-social/commit/452ae12928910ef296a8716ef5a7ccf7bfc7a41f))
+* gitignore cache fixed ([b0ebdf4](https://github.com/ematrito/go-social/commit/b0ebdf4097d199c3a1b2e4e19a76a205218f8174))
+
 ## [1.1.0](https://github.com/ematrito/go-social/compare/v1.0.0...v1.1.0) (2026-07-13)
 
 
